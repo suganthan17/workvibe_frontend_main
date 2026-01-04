@@ -83,11 +83,7 @@ function SidebarRecruiter() {
           <div className="w-14 h-14 rounded-full overflow-hidden ring-2 ring-white shadow-md bg-gray-100 flex items-center justify-center">
             {user.profilePic ? (
               <img
-                src={
-                  user.profilePic.startsWith("http")
-                    ? user.profilePic
-                    : `${BASE_URL}/${user.profilePic}`
-                }
+                src={user.profilePic}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
