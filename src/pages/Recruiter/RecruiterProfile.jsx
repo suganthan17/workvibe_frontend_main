@@ -74,7 +74,7 @@ const RecruiterProfile = () => {
       );
 
       if (logo instanceof File) {
-        formData.append("logo", logo);
+        formData.append("file", logo);
       }
 
       const res = await fetch(`${BASE_URL}/api/recruiter/profile`, {
@@ -137,7 +137,7 @@ const RecruiterProfile = () => {
                   <img
                     src={
                       typeof logo === "string"
-                        ? `${BASE_URL}/${logo}`
+                        ? logo
                         : URL.createObjectURL(logo)
                     }
                     alt="Company Logo"

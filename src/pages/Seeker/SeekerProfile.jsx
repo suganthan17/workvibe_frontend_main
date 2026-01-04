@@ -52,7 +52,7 @@ const SeekerProfile = () => {
       const formData = new FormData();
 
       if (section === "profilePic" && profilePic instanceof File)
-        formData.append("profilePic", profilePic);
+        formData.append("file", profilePic);
 
       if (section === "basicInfo")
         formData.append("basicInfo", JSON.stringify(basicInfo));
@@ -105,7 +105,7 @@ const SeekerProfile = () => {
                   <img
                     src={
                       typeof profilePic === "string"
-                        ? `${BASE_URL}/${profilePic}`
+                        ? profilePic
                         : URL.createObjectURL(profilePic)
                     }
                     alt="Profile"
