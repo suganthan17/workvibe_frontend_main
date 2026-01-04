@@ -128,7 +128,7 @@ const SeekerHome = () => {
 
           <div className="mt-6">
             <Link
-              to="/jobs"
+              to="/browsejobs"
               className="inline-flex items-center gap-3 px-7 py-3 rounded-full
                          bg-white text-indigo-700 font-semibold
                          border border-indigo-200
