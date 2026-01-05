@@ -12,7 +12,7 @@ export default function Applicants() {
   useEffect(() => {
     const fetchApplicants = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/application/recruiter/all`, {
+        const res = await fetch(`${BASE_URL}/api/application/recruiter`, {
           credentials: "include",
         });
         const data = await res.json();
@@ -30,29 +30,31 @@ export default function Applicants() {
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`${BASE_URL}/api/application/update/${id}`, {
+      const res = await fetch(`${BASE_URL}/api/application/${id}/status`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to update status");
+      if (!res.ok)
+        throw new Error(data.message || "Failed to update status");
+
       setApplications((apps) =>
         apps.map((a) => (a._id === id ? { ...a, status } : a))
       );
+
       toast.success(`Application marked as ${status}`);
     } catch (err) {
       toast.error(err.message);
     }
   };
 
-  const getResumeUrl = (path) => {
-    if (!path) return null;
-    const fixed = path.replace(/\\/g, "/");
-    if (/^https?:\/\//i.test(fixed)) return fixed;
-    return `${BASE_URL.replace(/\/$/, "")}/${fixed.replace(/^\//, "")}`;
-  };
+  // 🔑 Google Docs Viewer (ONLY WAY TO PREVIEW Cloudinary RAW files)
+  const getViewUrl = (url) =>
+    `https://docs.google.com/gview?url=${encodeURIComponent(
+      url
+    )}&embedded=true`;
 
   return (
     <div className="flex min-h-screen bg-[#F7F9FC]">
@@ -90,16 +92,10 @@ export default function Applicants() {
 
                   <div>
                     <h2 className="font-semibold text-gray-900">
-                      {app.userId?.Username ||
-                        app.userId?.fullname ||
-                        app.userId?.name ||
-                        "Unknown Applicant"}
+                      {app.userId?.Username || "Unknown Applicant"}
                     </h2>
                     <p className="text-sm text-gray-500">
-                      {app.userId?.Email ||
-                        app.userId?.email ||
-                        app.userId?.userEmail ||
-                        "No email"}
+                      {app.userId?.Email || "No email"}
                     </p>
                   </div>
                 </div>
@@ -126,7 +122,7 @@ export default function Applicants() {
                           : "bg-yellow-50 text-yellow-700"
                       }`}
                     >
-                      {app.status || "Pending"}
+                      {app.status || "Applied"}
                     </span>
                   </p>
                 </div>
@@ -135,10 +131,10 @@ export default function Applicants() {
                 <div className="flex items-center justify-between mt-6">
                   {app.resumeUrl ? (
                     <a
-                      href={getResumeUrl(app.resumeUrl)}
+                      href={getViewUrl(app.resumeUrl)}
                       target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:underline cursor-pointer"
+                      rel="noreferrer noopener"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:underline"
                     >
                       <FileText size={16} />
                       View resume
@@ -152,7 +148,7 @@ export default function Applicants() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => updateStatus(app._id, "Hired")}
-                      className="p-2 rounded-full bg-green-50 hover:bg-green-100 cursor-pointer"
+                      className="p-2 rounded-full bg-green-50 hover:bg-green-100"
                       title="Mark as hired"
                     >
                       <CheckCircle size={18} className="text-green-600" />
@@ -160,7 +156,7 @@ export default function Applicants() {
 
                     <button
                       onClick={() => updateStatus(app._id, "Rejected")}
-                      className="p-2 rounded-full bg-red-50 hover:bg-red-100 cursor-pointer"
+                      className="p-2 rounded-full bg-red-50 hover:bg-red-100"
                       title="Reject applicant"
                     >
                       <XCircle size={18} className="text-red-600" />

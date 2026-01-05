@@ -36,13 +36,21 @@ function AppliedJobs() {
     }
   };
 
+  // 🔑 Google Docs Viewer (ONLY WAY TO PREVIEW)
+  const getViewUrl = (url) =>
+    `https://docs.google.com/gview?url=${encodeURIComponent(
+      url
+    )}&embedded=true`;
+
   return (
     <div className="flex min-h-screen bg-[#F7F9FC]">
       <SidebarSeeker />
 
       <main className="flex-1 px-12 py-10">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Applied Jobs</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Applied Jobs
+          </h1>
           <p className="text-sm text-gray-500 mt-1">
             View all the jobs you have applied for.
           </p>
@@ -50,7 +58,9 @@ function AppliedJobs() {
 
         <div className="max-w-4xl bg-white rounded-2xl border border-gray-200">
           {loading ? (
-            <div className="px-6 py-8 text-gray-500">Loading applications…</div>
+            <div className="px-6 py-8 text-gray-500">
+              Loading applications…
+            </div>
           ) : applications.length === 0 ? (
             <div className="px-6 py-10 text-gray-600">
               You haven’t applied for any jobs yet.
@@ -65,18 +75,19 @@ function AppliedJobs() {
                     : ""
                 } hover:bg-gray-50 transition`}
               >
-                {/* Left */}
                 <div className="space-y-1">
                   <h2 className="text-base font-semibold text-gray-900">
                     {app.jobId?.jobTitle}
                   </h2>
-                  <p className="text-sm text-gray-500">{app.jobId?.location}</p>
+                  <p className="text-sm text-gray-500">
+                    {app.jobId?.location}
+                  </p>
                   <p className="text-xs text-gray-400">
-                    Applied on {new Date(app.appliedAt).toLocaleDateString()}
+                    Applied on{" "}
+                    {new Date(app.appliedAt).toLocaleDateString()}
                   </p>
                 </div>
 
-                {/* Right */}
                 <div className="flex items-center gap-6">
                   <span
                     className={`text-xs font-medium px-3 py-1 rounded-full ${statusStyle(
@@ -86,26 +97,14 @@ function AppliedJobs() {
                     {app.status}
                   </span>
 
-                  {/* Resume Preview */}
+                  {/* ✅ VIEW ONLY */}
                   <a
-                    href={`https://docs.google.com/gview?url=${encodeURIComponent(
-                      app.resumeUrl
-                    )}&embedded=true`}
+                    href={getViewUrl(app.resumeUrl)}
                     target="_blank"
                     rel="noreferrer noopener"
                     className="text-sm font-medium text-indigo-600 hover:underline"
                   >
-                    View
-                  </a>
-
-                  {/* Resume Download (always works) */}
-                  <a
-                    href={`${app.resumeUrl}?dl=true`}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="text-sm font-medium text-gray-600 hover:underline"
-                  >
-                    Download
+                    View Resume
                   </a>
                 </div>
               </div>
