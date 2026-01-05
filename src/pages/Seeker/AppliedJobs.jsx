@@ -36,12 +36,16 @@ function AppliedJobs() {
     }
   };
 
-  // ✅ FINAL CORRECT DOWNLOAD METHOD
-  const downloadResume = (url) => {
-    if (!url) return;
-    window.location.href =
-      `${url}?response-content-disposition=attachment`;
-  };
+  // ✅ FINAL CORRECT DOWNLOAD METHOD (UPDATED)
+const downloadResume = (url) => {
+  if (!url) return;
+
+  const downloadUrl = url.includes("?")
+    ? `${url}&response-content-disposition=attachment`
+    : `${url}?response-content-disposition=attachment`;
+
+  window.location.href = encodeURI(downloadUrl);
+};
 
   return (
     <div className="flex min-h-screen bg-[#F7F9FC]">
