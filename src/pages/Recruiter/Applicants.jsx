@@ -54,11 +54,25 @@ function Applicants() {
     }
   };
 
-  // ✅ FINAL Cloudinary RAW download URL
-  const getDownloadUrl = (url) =>
-    url
-      ? `${url}?response-content-disposition=attachment`
-      : "#";
+  // ✅ FINAL WORKING DOWNLOAD HANDLER
+  const downloadResume = async (url) => {
+    try {
+      const res = await fetch(
+        `${url}?response-content-disposition=attachment`
+      );
+      const blob = await res.blob();
+
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "resume.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      toast.error("Failed to download resume");
+      console.error(err);
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F7F9FC]">
@@ -130,13 +144,13 @@ function Applicants() {
 
                 <div className="flex items-center justify-between mt-6">
                   {app.resumeUrl ? (
-                    <a
-                      href={getDownloadUrl(app.resumeUrl)}
+                    <button
+                      onClick={() => downloadResume(app.resumeUrl)}
                       className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:underline"
                     >
                       <FileDown size={16} />
                       Download Resume
-                    </a>
+                    </button>
                   ) : (
                     <span className="text-sm text-gray-400">
                       No resume

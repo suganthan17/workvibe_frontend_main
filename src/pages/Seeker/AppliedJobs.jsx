@@ -36,11 +36,25 @@ function AppliedJobs() {
     }
   };
 
-  // ✅ FINAL Cloudinary RAW download URL
-  const getDownloadUrl = (url) =>
-    url
-      ? `${url}?response-content-disposition=attachment`
-      : "#";
+  // ✅ FINAL WORKING DOWNLOAD HANDLER
+  const downloadResume = async (url) => {
+    try {
+      const res = await fetch(
+        `${url}?response-content-disposition=attachment`
+      );
+      const blob = await res.blob();
+
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "resume.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      alert("Failed to download resume");
+      console.error(err);
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F7F9FC]">
@@ -97,12 +111,12 @@ function AppliedJobs() {
                     {app.status}
                   </span>
 
-                  <a
-                    href={getDownloadUrl(app.resumeUrl)}
+                  <button
+                    onClick={() => downloadResume(app.resumeUrl)}
                     className="text-sm font-medium text-indigo-600 hover:underline"
                   >
                     Download Resume
-                  </a>
+                  </button>
                 </div>
               </div>
             ))
