@@ -94,6 +94,8 @@ function AppliedJobs() {
                       app.resumeUrl
                     )}&embedded=true`}
                     target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-sm font-medium text-indigo-600 hover:underline"
                   >
                     View resume
                   </a>
