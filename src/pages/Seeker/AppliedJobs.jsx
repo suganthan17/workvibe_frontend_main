@@ -21,6 +21,7 @@ function AppliedJobs() {
         setLoading(false);
       }
     };
+
     fetchAppliedJobs();
   }, []);
 
@@ -35,8 +36,11 @@ function AppliedJobs() {
     }
   };
 
+  // ✅ FINAL Cloudinary RAW download URL
   const getDownloadUrl = (url) =>
-    url ? `${url}?fl_attachment=true` : "#";
+    url
+      ? `${url}?response-content-disposition=attachment`
+      : "#";
 
   return (
     <div className="flex min-h-screen bg-[#F7F9FC]">
@@ -95,8 +99,6 @@ function AppliedJobs() {
 
                   <a
                     href={getDownloadUrl(app.resumeUrl)}
-                    target="_blank"
-                    rel="noreferrer noopener"
                     className="text-sm font-medium text-indigo-600 hover:underline"
                   >
                     Download Resume

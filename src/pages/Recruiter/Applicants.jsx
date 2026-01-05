@@ -25,6 +25,7 @@ function Applicants() {
         setLoading(false);
       }
     };
+
     fetchApplicants();
   }, []);
 
@@ -53,8 +54,11 @@ function Applicants() {
     }
   };
 
+  // ✅ FINAL Cloudinary RAW download URL
   const getDownloadUrl = (url) =>
-    url ? `${url}?fl_attachment=true` : "#";
+    url
+      ? `${url}?response-content-disposition=attachment`
+      : "#";
 
   return (
     <div className="flex min-h-screen bg-[#F7F9FC]">
@@ -128,8 +132,6 @@ function Applicants() {
                   {app.resumeUrl ? (
                     <a
                       href={getDownloadUrl(app.resumeUrl)}
-                      target="_blank"
-                      rel="noreferrer noopener"
                       className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:underline"
                     >
                       <FileDown size={16} />
