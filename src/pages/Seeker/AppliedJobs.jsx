@@ -10,10 +10,10 @@ function AppliedJobs() {
   useEffect(() => {
     const fetchAppliedJobs = async () => {
       try {
-        const res = await fetch(
-          `${BASE_URL}/api/application/seeker/applications`,
-          { credentials: "include" }
-        );
+        const res = await fetch(`${BASE_URL}/api/application/my`, {
+          credentials: "include",
+        });
+
         const data = await res.json();
         setApplications(data.applications || []);
       } catch (err) {
@@ -44,9 +44,7 @@ function AppliedJobs() {
       <main className="flex-1 px-12 py-10">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Applied Jobs
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900">Applied Jobs</h1>
           <p className="text-sm text-gray-500 mt-1">
             View all the jobs you have applied for.
           </p>
@@ -55,9 +53,7 @@ function AppliedJobs() {
         {/* List Container */}
         <div className="max-w-4xl bg-white rounded-2xl border border-gray-200">
           {loading ? (
-            <div className="px-6 py-8 text-gray-500">
-              Loading applications…
-            </div>
+            <div className="px-6 py-8 text-gray-500">Loading applications…</div>
           ) : applications.length === 0 ? (
             <div className="px-6 py-10 text-gray-600">
               You haven’t applied for any jobs yet.
@@ -77,12 +73,9 @@ function AppliedJobs() {
                   <h2 className="text-base font-semibold text-gray-900">
                     {app.jobId?.jobTitle}
                   </h2>
-                  <p className="text-sm text-gray-500">
-                    {app.jobId?.location}
-                  </p>
+                  <p className="text-sm text-gray-500">{app.jobId?.location}</p>
                   <p className="text-xs text-gray-400">
-                    Applied on{" "}
-                    {new Date(app.appliedAt).toLocaleDateString()}
+                    Applied on {new Date(app.appliedAt).toLocaleDateString()}
                   </p>
                 </div>
 
@@ -96,12 +89,7 @@ function AppliedJobs() {
                     {app.status}
                   </span>
 
-                  <a
-                    href={`${BASE_URL}${app.resumeUrl}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-sm font-medium text-indigo-600 hover:underline cursor-pointer"
-                  >
+                  <a href={app.resumeUrl} target="_blank" rel="noreferrer">
                     View resume
                   </a>
                 </div>

@@ -78,7 +78,7 @@ function JobDetails({ job: propJob = null }) {
   useEffect(() => {
     const checkApplied = async () => {
       const res = await fetch(
-        `${BASE_URL}/api/application/seeker/has-applied/${jobId}`,
+        `${BASE_URL}/api/application/has-applied/${jobId}`,
         { credentials: "include" }
       );
       const data = await res.json();
