@@ -39,11 +39,10 @@ function Applicants() {
       });
 
       const data = await res.json();
-      if (!res.ok)
-        throw new Error(data.message || "Failed to update status");
+      if (!res.ok) throw new Error(data.message || "Failed to update status");
 
       setApplications((apps) =>
-        apps.map((a) => (a._id === id ? { ...a, status } : a))
+        apps.map((a) => (a._id === id ? { ...a, status } : a)),
       );
 
       toast.success(`Marked as ${status}`);
@@ -52,13 +51,11 @@ function Applicants() {
     }
   };
 
-  // ✅ FINAL, WORKING, SESSION-SAFE DOWNLOAD
   const downloadResume = async (id, filename) => {
     try {
-      const res = await fetch(
-        `${BASE_URL}/api/application/download/${id}`,
-        { credentials: "include" }
-      );
+      const res = await fetch(`${BASE_URL}/api/application/download/${id}`, {
+        credentials: "include",
+      });
 
       if (!res.ok) throw new Error("Download failed");
 
@@ -74,7 +71,7 @@ function Applicants() {
 
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      toast.error("Failed to download resume",err);
+      toast.error("Failed to download resume", err);
     }
   };
 
@@ -84,9 +81,7 @@ function Applicants() {
 
       <main className="flex-1 px-12 py-10">
         <div className="mb-10">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Applicants
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900">Applicants</h1>
           <p className="text-sm text-gray-500 mt-1">
             View and manage candidates who applied for your jobs.
           </p>
@@ -122,23 +117,19 @@ function Applicants() {
 
                 <div className="text-sm text-gray-600 space-y-2">
                   <p>
-                    <span className="font-medium text-gray-800">
-                      Job:
-                    </span>{" "}
+                    <span className="font-medium text-gray-800">Job:</span>{" "}
                     {app.jobId?.jobTitle || "N/A"}
                   </p>
 
                   <p>
-                    <span className="font-medium text-gray-800">
-                      Status:
-                    </span>{" "}
+                    <span className="font-medium text-gray-800">Status:</span>{" "}
                     <span
                       className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                         app.status === "Hired"
                           ? "bg-green-50 text-green-700"
                           : app.status === "Rejected"
-                          ? "bg-red-50 text-red-700"
-                          : "bg-yellow-50 text-yellow-700"
+                            ? "bg-red-50 text-red-700"
+                            : "bg-yellow-50 text-yellow-700"
                       }`}
                     >
                       {app.status}
@@ -149,39 +140,33 @@ function Applicants() {
                 <div className="flex items-center justify-between mt-6">
                   {app.resumeUrl ? (
                     <button
-                      onClick={() =>
-                        downloadResume(app._id, app.resumeName)
-                      }
+                      onClick={() => downloadResume(app._id, app.resumeName)}
                       className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:underline"
                     >
                       <FileDown size={16} />
                       Download Resume
                     </button>
                   ) : (
-                    <span className="text-sm text-gray-400">
-                      No resume
-                    </span>
+                    <span className="text-sm text-gray-400">No resume</span>
                   )}
 
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() =>
-                        updateStatus(app._id, "Hired")
-                      }
-                      className="p-2 rounded-full bg-green-50 hover:bg-green-100"
-                    >
-                      <CheckCircle size={18} className="text-green-600" />
-                    </button>
+                  {app.status === "Pending" && (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => updateStatus(app._id, "Hired")}
+                        className="p-2 rounded-full bg-green-50 hover:bg-green-100"
+                      >
+                        <CheckCircle size={18} className="text-green-600" />
+                      </button>
 
-                    <button
-                      onClick={() =>
-                        updateStatus(app._id, "Rejected")
-                      }
-                      className="p-2 rounded-full bg-red-50 hover:bg-red-100"
-                    >
-                      <XCircle size={18} className="text-red-600" />
-                    </button>
-                  </div>
+                      <button
+                        onClick={() => updateStatus(app._id, "Rejected")}
+                        className="p-2 rounded-full bg-red-50 hover:bg-red-100"
+                      >
+                        <XCircle size={18} className="text-red-600" />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
