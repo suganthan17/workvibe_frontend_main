@@ -75,7 +75,7 @@ const RecruiterHome = () => {
           >
             <div className="flex items-start justify-between">
               <h2 className="text-sm font-medium">Jobs Posted</h2>
-              <Link to="/jobs-posted">
+              <Link to="/jobsposted">
                 <div className={`${iconContainerClass} bg-white/20`}>
                   <MoveUpRight className="w-4 h-4 text-white" />
                 </div>
